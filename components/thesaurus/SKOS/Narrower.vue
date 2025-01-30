@@ -14,13 +14,14 @@ const query = `
             ?uri skos:prefLabel ?label .
         FILTER(langMatches(lang(?label), "${locale.value}"))
         }
+        ORDER BY ?label
     `
 
 const { data, error } = await useSPARQLData(config.thesaurusEndpoint, query)
 
 </script>
 <template>
-    <div class="row mb-2" v-if="data">
+    <div class="row mb-2" v-if="data.length > 0">
         <div class="col-3">{{ t('Narrower Terms') }}</div>
         <div class="col">
             <div class="row" v-for="data in data">

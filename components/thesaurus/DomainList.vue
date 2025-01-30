@@ -1,30 +1,7 @@
 <script setup lang="js">
-import useSPARQLData from '~/composables/useSPARQLData'
-
 const { t, locale } = useI18n()
-const localePath = useLocalePath()
-const config = useAppConfig()
-const uri = 'http://metadata.un.org/thesaurus/00'
-
-const query = `
-    PREFIX skos: <http://www.w3.org/2004/02/skos/core#> 
-    PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> 
-    PREFIX dc: <http://purl.org/dc/elements/1.1/>
-    SELECT ?id ?uri ?label 
-    WHERE { 
-        ?uri rdf:type skos:ConceptScheme . 
-        ?uri skos:prefLabel ?label . 
-        ?uri dc:identifier ?id .
-        FILTER(lang(?label) = "${locale.value}") 
-    } 
-    ORDER BY ?id
-`
-
-const { data, error } = await useSPARQLData(config.thesaurusEndpoint, query)
-
-if (error) {
-    console.info("Errors", error.value)
-}
+const props = defineProps(['uri'])
+const trimmedURI = props.uri.slice(0,-2)
 
 </script>
 <template>
@@ -33,43 +10,22 @@ if (error) {
             <div class="col-7">
                 <!-- Don't forget deprecated and deprecated/replaced -->
                 <!-- rdf:type skos:Concept-->
-                <div class="row mb-2" v-if="data">
-                    <div class="col-3">{{ t('Concept Schemes') }}</div>
-                    <div class="col">
-                        <div class="row" v-for="data in data">
-                            <NuxtLink
-                                :href="localePath({ name: 'thesaurus-id', params: { id: data.uri.value.split('/').slice(-1)[0] } })">
-                                {{
-                                    data.id.value }} - {{
-                                    data.label.value }}</NuxtLink>
-                        </div>
-                    </div>
-                </div>
+                <ThesaurusSKOSSchemes :uri="props.uri" />
                 <!-- URI -->
                 <div class="row mb-2">
                     <div class="col-3">{{ t('URI') }}</div>
                     <div class="col">
-                        <div class="row">{{ uri }}</div>
+                        <div class="row">
+                            <NuxtLink
+                                :href="localePath({ name: 'thesaurus-id', params: {id: '/'} }).slice(0,-3)">
+                                {{ trimmedURI }}</NuxtLink>
+                        </div>
                     </div>
                 </div>
                 <!-- Other formats -->
-                <div class="row mb-2">
-                    <div class="col-3">{{ t('Other Formats') }}</div>
-                    <div class="col"></div>
-                </div>
+                <ThesaurusFormats :uri="props.uri" />
             </div>
-            <div class="col">
-                <div class="row mb-2">
-                    <div class="col">
-                        {{ t('Language Equivalents') }}
-                    </div>
-                </div>
-                <!-- xml:lang and skos:prefLabel for each lang -->
-                <div class="row">
-                    <div class="col-1">//Lang</div>
-                    <div class="col">//Label</div>
-                </div>
-            </div>
+            <ThesaurusSKOSPrefLabels :uri="props.uri" />
         </div>
 
     </div>

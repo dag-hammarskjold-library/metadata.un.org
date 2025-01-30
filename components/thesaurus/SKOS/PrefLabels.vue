@@ -1,7 +1,7 @@
 <script setup lang="js">
 import useSPARQLData from '~/composables/useSPARQLData'
 
-const { t, locale } = useI18n()
+const { t, locale, setLocale } = useI18n()
 const props = defineProps(['uri'])
 const config = useAppConfig()
 const query = `
@@ -14,8 +14,13 @@ const query = `
 
 const { data, error } = await useSPARQLData(config.thesaurusEndpoint, query)
 
+const getLabelByLang = (data, lang) => {
+    return data.find(item => item.label['xml:lang'] === lang)?.label.value || null;
+}
 
-
+const changeLocale = (lang) => {
+    setLocale(lang);
+}
 </script>
 <template>
     <div class="col">
@@ -26,9 +31,13 @@ const { data, error } = await useSPARQLData(config.thesaurusEndpoint, query)
         </div>
         <!-- xml:lang and skos:prefLabel for each lang -->
         <!-- to do: ensure order is correct -->
-        <div class="row" v-for="data in data">
-            <div class="col-1">{{ data.label['xml:lang'] }}</div>
-            <div class="col">{{ data.label.value }}</div>
+        <div class="row" v-for="lang in ['ar', 'zh', 'en', 'fr', 'ru', 'es']" :key="lang">
+            <div class="col-1">{{ lang }}</div>
+            <div class="col">
+                <NuxtLink :to="`#`" @click.prevent="changeLocale(lang)">
+                    {{ getLabelByLang(data, lang) }}
+                </NuxtLink>
+            </div>
         </div>
     </div>
 </template>

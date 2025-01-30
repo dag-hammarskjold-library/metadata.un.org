@@ -24,23 +24,26 @@ const props = defineProps(['uri'])
                 </div>
                 -->
                 <!-- skos:broader -->
-                <ThesaurusSKOSBroader :uri="uri" />
+                <ThesaurusSKOSBroader :uri="props.uri" />
                 <!-- skos:narrower-->
-                <ThesaurusSKOSNarrower :uri="uri" />
+                <ThesaurusSKOSNarrower :uri="props.uri" />
                 <!-- skos:related -->
-                <ThesaurusSKOSRelated :uri="uri" />
+                <ThesaurusSKOSRelated :uri="props.uri" />
                 <!-- URI -->
                 <div class="row mb-2">
                     <div class="col-3">{{ t('URI') }}</div>
-                    <div class="col">{{ props.uri }}</div>
+                    <div class="col">
+                        <div class="row">
+                            <NuxtLink
+                                :href="localePath({ name: 'thesaurus-id', params: { id: props.uri.split('/').slice(-1)[0] } })">
+                                {{ props.uri }}</NuxtLink>
+                        </div>
+                    </div>
                 </div>
                 <!-- Other formats -->
-                <div class="row mb-2">
-                    <div class="col-3">{{ t('Other Formats') }}</div>
-                    <div class="col"></div>
-                </div>
+                <ThesaurusFormats :uri="props.uri" />
             </div>
-            <ThesaurusSKOSPrefLabels :uri="uri" />
+            <ThesaurusSKOSPrefLabels :uri="props.uri" />
         </div>
 
     </div>

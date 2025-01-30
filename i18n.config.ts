@@ -7,6 +7,7 @@ export default defineI18nConfig(() => ({
             'About': 'About',
             'Concept Schemes': 'Concept Schemes',
             'Language Equivalents': 'Language Equivalents',
+            'Hierarchies': 'Hierarchies',
         },
         zh: {
             'Browse Concepts': 'Browse Concepts',
@@ -14,6 +15,7 @@ export default defineI18nConfig(() => ({
             'About': 'About',
             'Concept Schemes': 'Concept Schemes',
             'Language Equivalents': 'Language Equivalents',
+            'Hierarchies': 'Hierarchies',
         },
         en: {
             'UNBIS Thesaurus': 'UNBIS Thesaurus',
@@ -22,6 +24,7 @@ export default defineI18nConfig(() => ({
             'About': 'About',
             'Concept Schemes': 'Concept Schemes',
             'Language Equivalents': 'Language Equivalents',
+            'Hierarchies': 'Hierarchies',
         },
         fr: {
             'UNBIS Thesaurus': 'Thésaurus UNBIS',
@@ -29,7 +32,8 @@ export default defineI18nConfig(() => ({
             'Browse Alphabetically': 'Liste alphabétique',
             'About': 'À propos',
             'Concept Schemes': 'Schéma de concepts',
-            'Language Equivalents': 'Équivalents linguistiques '
+            'Language Equivalents': 'Équivalents linguistiques',
+            'Hierarchies': 'Hierarchies',
         },
         ru: {
             'Browse Concepts': 'Browse Concepts',
@@ -37,6 +41,7 @@ export default defineI18nConfig(() => ({
             'About': 'About',
             'Concept Schemes': 'Concept Schemes',
             'Language Equivalents': 'Language Equivalents',
+            'Hierarchies': 'Hierarchies',
         },
         es: {
             'Browse Concepts': 'Browse Concepts',
@@ -44,6 +49,7 @@ export default defineI18nConfig(() => ({
             'About': 'About',
             'Concept Schemes': 'Concept Schemes',
             'Language Equivalents': 'Language Equivalents',
+            'Hierarchies': 'Hierarchies',
         }
     }
 }))

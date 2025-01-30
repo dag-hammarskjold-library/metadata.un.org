@@ -20,7 +20,7 @@ const { data, error } = await useSPARQLData(config.thesaurusEndpoint, query)
 
 </script>
 <template>
-    <div class="row mb-2" v-if="data">
+    <div class="row mb-2" v-if="data.length > 0">
         <div class="col-3">{{ t('Related Terms') }}</div>
         <div class="col">
             <div class="row" v-for="data in data">
