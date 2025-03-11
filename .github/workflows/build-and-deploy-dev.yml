@@ -1,0 +1,66 @@
+name: (Dev) Build and deploy
+
+on:
+  push:
+    tags:
+      # Only build and deploy when a new tag is created matching a semantic version.
+      - 'v[0-9]+.[0-9]+.[0-9]+'
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          npm install
+
+      - name: Build Nuxt.js application
+        run: |
+          npm run build
+
+      - name: Create a temporary directory for deployment artifacts
+        run: |
+          mkdir -p dist
+
+      - name: Copy generated files to dist directory
+        run: |
+          cp -r .output/* dist/
+
+      - name: Stop metadata service
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.EC2_HOSTNAME }} 
+          username: ec2-user 
+          key: ${{ secrets.SSH_PRIVATE_KEY }} 
+          script: sudo systemctl stop metadata.service 
+      
+      - name: Remove existing deployment
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.EC2_HOSTNAME }} 
+          username: ec2-user 
+          key: ${{ secrets.SSH_PRIVATE_KEY }} 
+          script: sudo rm -rf /var/www/metadata.un.org/*
+      
+      - name: scp dist to host
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.EC2_HOSTNAME }} 
+          username: ec2-user 
+          key: ${{ secrets.SSH_PRIVATE_KEY }} 
+          source: dist
+          target: /var/www/metadata.un.org/
+
+      - name: Restart service
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.EC2_HOSTNAME }} 
+          username: ec2-user 
+          key: ${{ secrets.SSH_PRIVATE_KEY }} 
+          script: |
+            sudo systemctl daemon-reload
+            sudo systemctl start metadata.service
+            sudo systemctl enable metadata.service
