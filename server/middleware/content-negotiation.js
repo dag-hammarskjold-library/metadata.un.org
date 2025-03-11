@@ -1,4 +1,6 @@
-export default function (req, res, next) {
+import { eventHandler } from "h3"
+
+export default eventHandler ((req, res, next) => {
     const url = req.url
     const acceptHeader = req.headers.accept || ''
 
@@ -15,4 +17,4 @@ export default function (req, res, next) {
                 requestedType = 'applicatoin/ld+json'
         }
     }
-}
+})
