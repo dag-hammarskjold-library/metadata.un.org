@@ -6,6 +6,9 @@ const route = useRoute()
 const id = route.params.id
 const uri = `${config.uriBase}thesaurus/${id}`
 
+const accept_headers = useRequestHeaders(['accept'])
+console.log(accept_headers)
+
 let conceptType = 'concept'
 
 if (id.length == 6) {

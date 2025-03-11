@@ -10,8 +10,9 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
-    "@nuxtjs/i18n": "8.5.5",
+    "@nuxtjs/i18n": "9.3.1",
     "nuxt": "^3.14.0",
+    "typescript": "^5.7.3",
     "usebootstrap": "^3.5.100",
     "vue": "latest",
     "vue-router": "latest"
