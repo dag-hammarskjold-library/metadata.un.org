@@ -1,6 +1,7 @@
 <script setup lang="js">
 import useSPARQLData from '~/composables/useSPARQLData'
 
+const localePath = useLocalePath()
 const { t, locale } = useI18n()
 const config = useAppConfig()
 const schemeQuery = `

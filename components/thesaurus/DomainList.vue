@@ -1,4 +1,5 @@
 <script setup lang="js">
+const localePath = useLocalePath()
 const { t, locale } = useI18n()
 const props = defineProps(['uri'])
 const trimmedURI = props.uri.slice(0,-2)

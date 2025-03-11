@@ -5,6 +5,7 @@
  */
 import useSPARQLHierarchy from '~/composables/useSPARQLHierarchy'
 
+const localePath = useLocalePath()
 const { t, locale } = useI18n()
 const props = defineProps(['uri'])
 const config = useAppConfig()
